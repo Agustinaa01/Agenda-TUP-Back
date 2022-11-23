@@ -27,9 +27,9 @@ namespace Agenda_Tup_Back.Data.Repository.Implementations
         {
             return _context.Users.ToList();
         }
-        public void CreateUsers(User user)
+        public void CreateUsers(UserForCreation dto)
         {
-            _context.Users.Add(_mapper.Map<User>(user)); //mapear de dto a mascota
+            _context.Users.Add(_mapper.Map<User>(dto)); //mapear de dto a mascota
             _context.SaveChanges();
         }
         //public void UpdateUsers(UserForCreation dto)

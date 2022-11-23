@@ -43,12 +43,12 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser(UserForCreation dto)
         {
             try
             {
-                _userRepository.CreateUsers(user);
-                return Created("Created", user);
+                _userRepository.CreateUsers(dto);
+                return Created("Created", dto);
             }
             catch (Exception ex)
             {
