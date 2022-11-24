@@ -84,7 +84,9 @@ var mapper = config.CreateMapper();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 #endregion
+
 
 var app = builder.Build();
 

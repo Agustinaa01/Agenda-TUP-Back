@@ -32,6 +32,9 @@ namespace AgendaTupBack.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
@@ -50,6 +53,8 @@ namespace AgendaTupBack.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Contacts");
@@ -60,6 +65,7 @@ namespace AgendaTupBack.Migrations
                             Id = 4,
                             CelularNumber = "+54341234975",
                             Email = "Amigo@gmail.com",
+                            GroupId = 2,
                             LastName = "Cruz",
                             Name = "Esmeralda",
                             UserId = 2,
@@ -69,6 +75,7 @@ namespace AgendaTupBack.Migrations
                         {
                             Id = 3,
                             CelularNumber = "+54114567789",
+                            GroupId = 2,
                             LastName = "Romero",
                             Name = "Daniela",
                             UserId = 1,
@@ -78,6 +85,7 @@ namespace AgendaTupBack.Migrations
                         {
                             Id = 2,
                             CelularNumber = "+54341345367",
+                            GroupId = 1,
                             Name = "Maria",
                             UserId = 1,
                             state = 0
@@ -87,10 +95,37 @@ namespace AgendaTupBack.Migrations
                             Id = 1,
                             CelularNumber = "+543436789513",
                             Email = "Hijo@gmail.com",
+                            GroupId = 1,
                             LastName = "Castillo",
                             Name = "Juan",
                             UserId = 2,
                             state = 0
+                        });
+                });
+
+            modelBuilder.Entity("Agenda_Tup_Back.Entities.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GroupName = "Familia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GroupName = "Amigos"
                         });
                 });
 
@@ -145,13 +180,26 @@ namespace AgendaTupBack.Migrations
 
             modelBuilder.Entity("Agenda_Tup_Back.Entities.Contact", b =>
                 {
+                    b.HasOne("Agenda_Tup_Back.Entities.Group", "Group")
+                        .WithMany("Contact")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Agenda_Tup_Back.Entities.User", "User")
                         .WithMany("Contact")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Group");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agenda_Tup_Back.Entities.Group", b =>
+                {
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Agenda_Tup_Back.Entities.User", b =>

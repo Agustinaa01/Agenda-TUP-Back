@@ -27,11 +27,14 @@ namespace Agenda_Tup_Back.Data.Repository.Implementations
         {
             return _context.Users.ToList();
         }
-        public void CreateUsers(UserForCreation dto)
+        public void CreateUsers(UserForCreation userDTO)
         {
-            _context.Users.Add(_mapper.Map<User>(dto)); //mapear de dto a mascota
-            _context.SaveChanges();
+            {
+                _context.Users.Add(_mapper.Map<User>(userDTO));
+                _context.SaveChanges();
+            }
         }
+
         //public void UpdateUsers(UserForCreation dto)
         //{
         //    _context.Users.Update(_mapper.Map<User>(dto));

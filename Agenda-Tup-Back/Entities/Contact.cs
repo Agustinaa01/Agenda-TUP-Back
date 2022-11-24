@@ -6,7 +6,7 @@ namespace Agenda_Tup_Back.Entities
 {
     public class Contact
     {
-        [Key]
+        //[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
@@ -17,9 +17,12 @@ namespace Agenda_Tup_Back.Entities
 
         public string? Email { get; set; }
         public State state { get; set; } = State.Active;
-        [ForeignKey("UserId")]
+        //[ForeignKey("UserId")]
         public User User { get; set; } //Usuario al que pertenece
         public int UserId { get; set; }
+        //[ForeignKey("GroupId")]
+        public Group Group { get; set; } 
+        public int? GroupId { get; set; }
     }
 
 }

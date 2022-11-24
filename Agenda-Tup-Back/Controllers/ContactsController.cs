@@ -1,9 +1,9 @@
-﻿using Agenda_Tup_Back.Data.Interfaces;
-using Agenda_Tup_Back.Data.Repository;
+﻿
+
+using System.Security.Claims;
+using Agenda_Tup_Back.Data.Interfaces;
 using Agenda_Tup_Back.DTO;
-using Agenda_Tup_Back.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agenda_Tup_Back.Controllers
@@ -15,7 +15,7 @@ namespace Agenda_Tup_Back.Controllers
     {
         private readonly IContactRepository _contactRepository;
 
-        public ContactsController(IContactRepository contactRepository, IUserRepository userRepository)
+        public ContactsController(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
         }
@@ -37,7 +37,8 @@ namespace Agenda_Tup_Back.Controllers
         {
             try
             {
-                _contactRepository.CreateContacts(createContactDTO);
+                var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                _contactRepository.CreateContacts(createContactDTO, Int32.Parse(id));
             }
             catch (Exception ex)
             {
@@ -47,11 +48,12 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateContact(ContactForCreation dto, int Id)
+        public IActionResult UpdateContact(ContactForCreation dto)
         {
             try
             {
-                _contactRepository.UpdateContacts(dto, Id);
+                var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                _contactRepository.UpdateContacts(dto, Int32.Parse(id));
             }
             catch (Exception ex)
             {
@@ -61,27 +63,40 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpDelete]
-        //[Route("{Id}")]
-        public IActionResult DeleteContactsById(int Id)
+        public IActionResult DeleteContactById(int id)
         {
             try
             {
-                string role = HttpContext.User.FindFirst("role").Value;
-                if (role == "Admin")
-                {
-                    _contactRepository.DeleteContacts(Id);
-                }
-                else
-                {
-                    _contactRepository.ArchiveContacts(Id);
-                }
-                return NoContent();
+                _contactRepository.DeleteContacts(id);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
+            return Ok();
         }
+        //[HttpDelete]
+        ////[Route("{Id}")]
+        //public IActionResult DeleteContactsById(int Id)
+        //{
+        //    try
+        //    {
+        //        string role = HttpContext.User.FindFirst("role").Value;
+        //        if (role == "Admin")
+        //        {
+        //            _contactRepository.DeleteContacts(Id);
+        //        }
+        //        else
+        //        {
+        //            _contactRepository.ArchiveContacts(Id);
+        //        }
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
         //[HttpPost]
         //public IActionResult CreateGroup(AddToGroupForcreation dto)
         //{

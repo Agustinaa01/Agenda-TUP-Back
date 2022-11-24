@@ -1,4 +1,5 @@
-﻿using Agenda_Tup_Back.Data.Interfaces;
+﻿using Agenda_Tup_Back.Data.DTO;
+using Agenda_Tup_Back.Data.Interfaces;
 using Agenda_Tup_Back.DTO;
 using Agenda_Tup_Back.Entities;
 using Agenda_Tup_Back.Models.Enum;
@@ -19,16 +20,18 @@ namespace Agenda_Tup_Back.Data.Repository
         {
             return _context.Contacts.ToList();
         }
-        public void CreateContacts(ContactForCreation dto)
+        public void CreateContacts(ContactForCreation dto, int Id)
         {
-            _context.Contacts.Add(_mapper.Map<Contact>(dto));
+            var newContact = _mapper.Map<Contact>(dto);
+            newContact.UserId = Id;
+            _context.Contacts.Add(newContact);
             _context.SaveChanges();
         }
         public void UpdateContacts(ContactForCreation dto, int Id)
         {
-            Contact contact = _mapper.Map<Contact>(dto);
-            contact.Id = Id;
-            _context.Contacts.Update(contact);
+            var newContact = _mapper.Map<Contact>(dto);
+            newContact.UserId = Id;
+            _context.Contacts.Update(newContact);
             _context.SaveChanges();
         }
         public void DeleteContacts(int Id)
@@ -46,11 +49,6 @@ namespace Agenda_Tup_Back.Data.Repository
             }
             _context.SaveChanges();
         }
-        //public void CreateGroup(AddToGroupForcreation dto)
-        //{
-        //    _context.Contacts.Add(_mapper.Map<Contact>(dto));
-        //    _context.SaveChanges();
-        //}
 
     }
 

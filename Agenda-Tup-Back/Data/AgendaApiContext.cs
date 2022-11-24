@@ -8,13 +8,23 @@ namespace Agenda_Tup_Back.Data
     {
         public DbSet <User> Users { get; set; }
         public DbSet <Contact> Contacts { get; set; }
-
+        public DbSet<Group> Groups { get; set; }
         public AgendaApiContext(DbContextOptions<AgendaApiContext> options): base(options)
         {
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Estamos sobreescribiendo la clase padre
         {
+            Group Familia = new Group()
+            {
+                Id = 1,
+                GroupName = "Familia",
+            };
+            Group Amigos = new Group()
+            {
+                Id = 2,
+                GroupName = "Amigos",
+            };
             User Erica = new User()
             {
                 Id = 1,
@@ -43,6 +53,7 @@ namespace Agenda_Tup_Back.Data
                 CelularNumber = "+543436789513",
                 Email = "Hijo@gmail.com",
                 UserId = Dana.Id,
+                GroupId = Familia.Id,
                 state = State.Active
             };
             Contact Maria = new Contact()
@@ -51,6 +62,7 @@ namespace Agenda_Tup_Back.Data
                 Name = "Maria",
                 CelularNumber = "+54341345367",
                 UserId = Erica.Id,
+                GroupId = Familia.Id,
                 state = State.Active
             };
             Contact Daniela = new Contact()
@@ -60,6 +72,7 @@ namespace Agenda_Tup_Back.Data
                 LastName = "Romero",
                 CelularNumber = "+54114567789",
                 UserId = Erica.Id,
+                GroupId = Amigos.Id,
                 state = State.Active
             };
             Contact Esmeralda = new Contact()
@@ -70,12 +83,16 @@ namespace Agenda_Tup_Back.Data
                 CelularNumber = "+54341234975",
                 Email = "Amigo@gmail.com",
                 UserId = Dana.Id,
+                GroupId = Amigos.Id,
                 state = State.Active
 
             };
+
             modelBuilder.Entity<Contact>().HasData(Esmeralda, Daniela, Maria, Juan);
             modelBuilder.Entity<User>().HasData(Dana, Erica);
-            modelBuilder.Entity<User>().HasMany(u => u.Contact).WithOne(c => c.User); //Tabla de 1-N        
+            modelBuilder.Entity<Group>().HasData(Familia, Amigos);
+            modelBuilder.Entity<User>().HasMany(u => u.Contact).WithOne(c => c.User);
+            modelBuilder.Entity<Group>().HasMany(u => u.Contact).WithOne(c => c.Group); //Tabla de 1-N        
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -20,40 +20,40 @@ namespace Agenda_Tup_Back.Controllers
         {
             _userRepository = userRepository;
         }
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_userRepository.GetAllUsers());
-        }
+        //[HttpGet]
+        //public IActionResult GetAll()
+        //{
+        //    return Ok(_userRepository.GetAllUsers());
+        //}
 
-        [HttpGet]
-        [Route("{Id}")]
-        public IActionResult GetUserById(int Id)
-        {
-            //User user = _userRepository.GetUserById(Id);
-            //var dto = _automapper.Map<GetUserById>(Id);
-            try
-            {
-                return Ok(_userRepository.GetUserById(Id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpGet]
+        //[Route("{Id}")]
+        //public IActionResult GetUserById(int Id)
+        //{
+        //    //User user = _userRepository.GetUserById(Id);
+        //    //var dto = _automapper.Map<GetUserById>(Id);
+        //    try
+        //    {
+        //        return Ok(_userRepository.GetUserById(Id));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpPost]
-        public IActionResult CreateUser(UserForCreation dto)
+        public IActionResult CreateUser(UserForCreation userDTO)
         {
             try
             {
-                _userRepository.CreateUsers(dto);
-                return Created("Created", dto);
+                _userRepository.CreateUsers(userDTO);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+            return Created("Created", userDTO);
         }
         //[HttpPut]
         //public IActionResult UpdateUser(UserForCreation userCreationDTO)
