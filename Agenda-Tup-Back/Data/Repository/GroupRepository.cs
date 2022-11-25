@@ -15,18 +15,20 @@ namespace Agenda_Tup_Back.Data.Repository
             _context = context;
             _mapper = autoMapper;
         }
+        public Group? GetGroupById(int groupId)
+        {
+            return _context.Groups.SingleOrDefault(u => u.Id == groupId);
+        }
         public List<Group> GetAllGroups()
         {
             return _context.Groups.ToList();
         }
-        public void CreateGroups(GroupForCreation dto, int Id)
+        public void CreateGroups(GroupForCreation dto)
         {
-            var newContact = _mapper.Map<Contact>(dto);
-            newContact.GroupId = Id;
-            _context.Contacts.Add(newContact);
+            _context.Groups.Add(_mapper.Map<Group>(dto));
             _context.SaveChanges();
         }
-       
+
 
     }
 

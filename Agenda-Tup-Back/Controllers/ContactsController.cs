@@ -14,37 +14,42 @@ namespace Agenda_Tup_Back.Controllers
     public class ContactsController : ControllerBase
     {
         private readonly IContactRepository _contactRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ContactsController(IContactRepository contactRepository)
+        public ContactsController(IContactRepository contactRepository, IUserRepository userRepository)
         {
             _contactRepository = contactRepository;
+            _userRepository = userRepository;
         }
         [HttpGet]
         public IActionResult GetAllContacts()
         {
-            return Ok(_contactRepository.GetAllContacts());
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAllContacts(userId));
         }
 
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetOneById(int Id)
         {
-            return Ok(_contactRepository.GetAllContacts().Where(x => x.Id == Id));
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAllContacts(userId).Where(x => x.Id == Id));
         }
 
         [HttpPost]
-        public IActionResult CreateContact(ContactForCreation createContactDTO)
+        public IActionResult CreateContact(ContactForCreation dto)
         {
             try
             {
-                var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                _contactRepository.CreateContacts(createContactDTO, Int32.Parse(id));
+                int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                _contactRepository.CreateContacts(dto, userId);
+                return Created("Created", dto);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            return Created("Created", createContactDTO);
+            return Created("Created", dto);
         }
 
         [HttpPut]
@@ -52,8 +57,8 @@ namespace Agenda_Tup_Back.Controllers
         {
             try
             {
-                var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                _contactRepository.UpdateContacts(dto, Int32.Parse(id));
+                _contactRepository.UpdateContacts(dto);
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -63,67 +68,28 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteContactById(int id)
+        //[Route("{Id}")]
+        public IActionResult DeleteContactsById(int Id)
         {
             try
             {
-                _contactRepository.DeleteContacts(id);
+                var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+                if (role.Value == "Admin")
+                {
+                    _userRepository.DeleteUsers(Id);
+                }
+                else
+                {
+                    _userRepository.ArchiveUsers(Id);
+                }
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
-            return Ok();
         }
-        //[HttpDelete]
-        ////[Route("{Id}")]
-        //public IActionResult DeleteContactsById(int Id)
-        //{
-        //    try
-        //    {
-        //        string role = HttpContext.User.FindFirst("role").Value;
-        //        if (role == "Admin")
-        //        {
-        //            _contactRepository.DeleteContacts(Id);
-        //        }
-        //        else
-        //        {
-        //            _contactRepository.ArchiveContacts(Id);
-        //        }
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-        //[HttpPost]
-        //public IActionResult CreateGroup(AddToGroupForcreation dto)
-        //{
-        //    try
-        //    {
-        //        _contactRepository.CreateGroup(dto);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //    return Created("Created", dto);
-        //}
 
-        //[HttpPut]
-        //public IActionResult AddToGroup(string Id, string groupName)
-        //{
-        //    try
-        //    {
-        //        _contactRepository.AddToGroup(Id, groupName);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //    return NoContent();
-        //}
 
     }
     

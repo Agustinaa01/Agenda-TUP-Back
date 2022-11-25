@@ -18,6 +18,7 @@ namespace Agenda_Tup_Back.Entities
         public string Email { get; set; }
         public ICollection<Contact> Contact { get; set; }
         public Rol Rol { get; set; } = Rol.User;
-        
+
+        public State state { get; set; } = State.Active;
     }
 }

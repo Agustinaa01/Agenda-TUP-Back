@@ -6,7 +6,7 @@ namespace Agenda_Tup_Back.Data.Interfaces
     public interface IGroupRepository
     {
         public List<Group> GetAllGroups();
-
-        public void CreateGroups(GroupForCreation dto, int Id);
+        public Group? GetGroupById(int groupId);
+        public void CreateGroups(GroupForCreation dto);
     }
 }

@@ -16,7 +16,6 @@ namespace Agenda_Tup_Back.Entities
         public string? Alias { get; set; }
 
         public string? Email { get; set; }
-        public State state { get; set; } = State.Active;
         //[ForeignKey("UserId")]
         public User User { get; set; } //Usuario al que pertenece
         public int UserId { get; set; }

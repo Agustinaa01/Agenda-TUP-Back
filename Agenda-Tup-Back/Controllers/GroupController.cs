@@ -1,6 +1,7 @@
 ﻿
 using Agenda_Tup_Back.Data.DTO;
 using Agenda_Tup_Back.Data.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,25 +13,24 @@ namespace Agenda_Tup_Back.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IMapper _automapper;
 
         public GroupController(IGroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
         }
         [HttpGet]
-        public IActionResult GetAllGroups()
+        public IActionResult GetAllGroup()
         {
             return Ok(_groupRepository.GetAllGroups());
         }
 
-
         [HttpPost]
-        public IActionResult CreateGroups(GroupForCreation dto)
+        public IActionResult CreateGroup(GroupForCreation dto)
         {
             try
             {
-                var groups = _groupRepository.GetAllGroups();
-                return Ok(groups);
+                _groupRepository.CreateGroups(dto);
             }
             catch (Exception ex)
             {
@@ -38,5 +38,7 @@ namespace Agenda_Tup_Back.Controllers
             }
             return Created("Created", dto);
         }
+        
+
     }
 }

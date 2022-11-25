@@ -18,7 +18,7 @@ namespace Agenda_Tup_Back.Controllers
         public AuthenticationController(IConfiguration config, IUserRepository userRepository)
         {
             _config = config; //Hacemos la inyección para poder usar el appsettings.json
-            _userRepository = userRepository;
+            this._userRepository = userRepository;
 
         }
 

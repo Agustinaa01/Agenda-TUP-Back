@@ -6,12 +6,11 @@ namespace Agenda_Tup_Back.Data.Interfaces
 {
     public interface IContactRepository
     {
-        public List<Contact> GetAllContacts();
+        public List<Contact> GetAllContacts(int id);
         public void CreateContacts(ContactForCreation dto, int Id);
-        public void UpdateContacts(ContactForCreation dto, int Id);
+        public void UpdateContacts(ContactForCreation dto);
         public void DeleteContacts(int Id);
-        public void ArchiveContacts(int Id);
-
+        //public void ArchiveContacts(int Id);
         //public void CreateGroup(AddToGroupForcreation dto);
         //public void AddToGroup(string Id, string groupName);
     }
