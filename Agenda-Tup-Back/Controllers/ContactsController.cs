@@ -53,11 +53,13 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateContact(ContactForCreation dto)
+        [Route("{id}")]
+        public IActionResult UpdateContact(ContactForCreation dto, int id)
         {
             try
             {
-                _contactRepository.UpdateContacts(dto);
+                //int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                _contactRepository.UpdateContacts(dto, id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -68,7 +70,7 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpDelete]
-        //[Route("{Id}")]
+        [Route("{Id}")]
         public IActionResult DeleteContactsById(int Id)
         {
             try
@@ -76,11 +78,11 @@ namespace Agenda_Tup_Back.Controllers
                 var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
                 if (role.Value == "Admin")
                 {
-                    _userRepository.DeleteUsers(Id);
+                    _contactRepository.DeleteContacts(Id);
                 }
                 else
                 {
-                    _userRepository.ArchiveUsers(Id);
+                    _contactRepository.ArchiveContacts(Id);
                 }
                 return NoContent();
             }

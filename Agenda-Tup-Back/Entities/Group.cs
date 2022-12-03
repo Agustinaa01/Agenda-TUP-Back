@@ -9,7 +9,7 @@ namespace Agenda_Tup_Back.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? GroupName { get; set; }
-        public ICollection<Contact> Contact { get; set; }
+        public ICollection<Contact> Contacts { get; set; }
     }
 }
 

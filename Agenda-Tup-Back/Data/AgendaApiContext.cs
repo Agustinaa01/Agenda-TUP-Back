@@ -15,16 +15,6 @@ namespace Agenda_Tup_Back.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Estamos sobreescribiendo la clase padre
         {
-            Group Familia = new Group()
-            {
-                Id = 1,
-                GroupName = "Familia",
-            };
-            Group Amigos = new Group()
-            {
-                Id = 2,
-                GroupName = "Amigos",
-            };
             User Erica = new User()
             {
                 Id = 1,
@@ -54,7 +44,6 @@ namespace Agenda_Tup_Back.Data
                 Alias = "Juanito",
                 Email = "Hijo@gmail.com",
                 UserId = Dana.Id,
-                GroupId = Familia.Id,
             };
             Contact Maria = new Contact()
             {
@@ -66,7 +55,6 @@ namespace Agenda_Tup_Back.Data
                 Alias = "Mary",
                 Email = null,
                 UserId = Erica.Id,
-                GroupId = Familia.Id,
             };
             Contact Daniela = new Contact()
             {
@@ -78,7 +66,6 @@ namespace Agenda_Tup_Back.Data
                 Alias = null,
                 Email = null,
                 UserId = Erica.Id,
-                GroupId = Amigos.Id,
 
             };
             Contact Esmeralda = new Contact()
@@ -91,14 +78,25 @@ namespace Agenda_Tup_Back.Data
                 Email = "Amigo@gmail.com",
                 Alias = null,
                 UserId = Dana.Id,
-                GroupId = Amigos.Id,
+            };
+            Group Familia = new Group()
+            {
+                Id = 1,
+                GroupName = "Familia",
+                //ContactId = Juan.Id,
+            };
+            Group Amigos = new Group()
+            {
+                Id = 2,
+                GroupName = "Amigos",
+                //ContactId = Juan.Id,
             };
 
             modelBuilder.Entity<Contact>().HasData(Esmeralda, Daniela, Maria, Juan);
             modelBuilder.Entity<User>().HasData(Dana, Erica);
             modelBuilder.Entity<Group>().HasData(Familia, Amigos);
             modelBuilder.Entity<User>().HasMany(u => u.Contact).WithOne(c => c.User);
-            modelBuilder.Entity<Group>().HasMany(u => u.Contact).WithOne(c => c.Group); //Tabla de 1-N        
+            modelBuilder.Entity<Contact>().HasMany(u => u.Groups).WithMany(c => c.Contacts); //Tabla de 1-N        
             base.OnModelCreating(modelBuilder);
         }
     }

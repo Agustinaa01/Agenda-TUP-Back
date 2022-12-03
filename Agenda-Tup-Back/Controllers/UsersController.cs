@@ -33,11 +33,11 @@ namespace Agenda_Tup_Back.Controllers
         [Route("{Id}")]
         public IActionResult GetUserById(int Id)
         {
-            User user = _userRepository.GetUserById(Id);
-            var dto = _automapper.Map<GetUserByIdResponse>(user);
+            //User user = _userRepository.GetUserById(Id);
+            //var dto = _automapper.Map<GetUserByIdResponse>(user);
             try
             {
-                return Ok(dto);
+                return Ok(_userRepository.GetUserById(Id));
             }
             catch (Exception ex)
             {
@@ -74,20 +74,21 @@ namespace Agenda_Tup_Back.Controllers
 
 
         [HttpDelete]
-        public IActionResult DeleteUser(int id)
+        [Route("{Id}")]
+        public IActionResult DeleteUsersById(int Id)
         {
             try
             {
-
-                if (_userRepository.GetUserById(id).UserName == "Admin")
+                var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+                if (role.Value == "Admin")
                 {
-                    _userRepository.DeleteUsers(id);
+                    _userRepository.DeleteUsers(Id);
                 }
                 else
                 {
-                    _userRepository.ArchiveUsers(id);
+                    _userRepository.ArchiveUsers(Id);
                 }
-                return StatusCode(204);
+                return NoContent();
             }
             catch (Exception ex)
             {

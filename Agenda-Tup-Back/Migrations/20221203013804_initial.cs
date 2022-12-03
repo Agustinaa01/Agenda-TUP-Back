@@ -56,21 +56,39 @@ namespace AgendaTupBack.Migrations
                     Alias = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<int>(type: "INTEGER", nullable: false)
+                    state = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contacts_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Contacts_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactGroup",
+                columns: table => new
+                {
+                    ContactsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GroupsId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactGroup", x => new { x.ContactsId, x.GroupsId });
+                    table.ForeignKey(
+                        name: "FK_ContactGroup_Contacts_ContactsId",
+                        column: x => x.ContactsId,
+                        principalTable: "Contacts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContactGroup_Groups_GroupsId",
+                        column: x => x.GroupsId,
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -95,19 +113,19 @@ namespace AgendaTupBack.Migrations
 
             migrationBuilder.InsertData(
                 table: "Contacts",
-                columns: new[] { "Id", "Alias", "CelularNumber", "Email", "GroupId", "LastName", "Name", "TelephoneNumber", "UserId" },
+                columns: new[] { "Id", "Alias", "CelularNumber", "Email", "LastName", "Name", "TelephoneNumber", "UserId", "state" },
                 values: new object[,]
                 {
-                    { 1, "Juanito", "+543436789513", "Hijo@gmail.com", 1, "Castillo", "Juan", null, 2 },
-                    { 2, "Mary", "+54341345367", null, 1, "Martinez", "Maria", null, 1 },
-                    { 3, null, "+54114567789", null, 2, "Romero", "Daniela", null, 1 },
-                    { 4, null, "+54341234975", "Amigo@gmail.com", 2, "Cruz", "Esmeralda", "4214587", 2 }
+                    { 1, "Juanito", "+543436789513", "Hijo@gmail.com", "Castillo", "Juan", null, 2, 0 },
+                    { 2, "Mary", "+54341345367", null, "Martinez", "Maria", null, 1, 0 },
+                    { 3, null, "+54114567789", null, "Romero", "Daniela", null, 1, 0 },
+                    { 4, null, "+54341234975", "Amigo@gmail.com", "Cruz", "Esmeralda", "4214587", 2, 0 }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contacts_GroupId",
-                table: "Contacts",
-                column: "GroupId");
+                name: "IX_ContactGroup_GroupsId",
+                table: "ContactGroup",
+                column: "GroupsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_UserId",
@@ -118,6 +136,9 @@ namespace AgendaTupBack.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ContactGroup");
+
             migrationBuilder.DropTable(
                 name: "Contacts");
 

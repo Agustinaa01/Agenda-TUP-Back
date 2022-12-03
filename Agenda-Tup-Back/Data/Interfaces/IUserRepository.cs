@@ -6,7 +6,7 @@ namespace Agenda_Tup_Back.Data.Interfaces
     public interface IUserRepository
     {
         public User? ValidarUser(AuthenticationRequestBody authRequestBody);
-        public User? GetUserById(int userId);
+        public User GetUserById(int userId);
         public List<User> GetAllUsers();
         public void CreateUsers(UserForCreation dto);
         //public void UpdateUsers(UserForCreation dto);
