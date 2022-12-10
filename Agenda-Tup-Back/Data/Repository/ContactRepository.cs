@@ -35,11 +35,9 @@ namespace Agenda_Tup_Back.Data.Repository
         public void UpdateContacts(ContactForCreation dto, int id)
         {
             Contact contact = _mapper.Map<Contact>(dto);
-            contact.Id = id;
+            contact.UserId = id;
             _context.Contacts.Update(contact);
             _context.SaveChanges();
-            //_context.Contacts.Update(_mapper.Map<Contact>(dto));
-            //_context.SaveChanges();
         }
         public void DeleteContacts(int Id)
         {

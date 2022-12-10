@@ -49,18 +49,17 @@ namespace Agenda_Tup_Back.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return Created("Created", dto);
+            return NoContent();
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public IActionResult UpdateContact(ContactForCreation dto, int id)
+        public IActionResult UpdateContact(ContactForCreation dto)
         {
             try
             {
-                //int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-                _contactRepository.UpdateContacts(dto, id);
-                return NoContent();
+                int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                _contactRepository.UpdateContacts(dto, userId);
+                return Ok(dto);
             }
             catch (Exception ex)
             {
