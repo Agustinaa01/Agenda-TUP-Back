@@ -3,6 +3,7 @@ using Agenda_Tup_Back.Data.DTO;
 using Agenda_Tup_Back.Data.Interfaces;
 using Agenda_Tup_Back.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agenda_Tup_Back.Data.Repository
 {
@@ -18,7 +19,10 @@ namespace Agenda_Tup_Back.Data.Repository
 
         public List<Group> GetAllGroups()
         {
-            return _context.Groups.ToList();
+            var groups = _context.Groups
+            .Include(c=> c.Contacts)
+            .ToList();
+            return groups;
         }
         public Group? GetGroupById(int Id)
         {
@@ -31,6 +35,16 @@ namespace Agenda_Tup_Back.Data.Repository
             //_context.Groups.Add(group);
             //_context.SaveChanges();
             _context.Groups.Add(_mapper.Map<Group>(dto));
+            _context.SaveChanges();
+        }
+        public void AddContact(GroupForUpdate dto)
+        {
+            var contact = _context.Contacts
+                .Where(c => c.Id == dto.ContactId)
+                .Include(c => c.Groups)
+                .FirstOrDefault();
+            var group = _context.Groups.Find(dto.GroupId);
+            contact.Groups.Add(group);
             _context.SaveChanges();
         }
 

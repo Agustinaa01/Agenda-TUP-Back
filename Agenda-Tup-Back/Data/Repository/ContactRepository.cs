@@ -4,6 +4,7 @@ using Agenda_Tup_Back.DTO;
 using Agenda_Tup_Back.Entities;
 using Agenda_Tup_Back.Models.Enum;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agenda_Tup_Back.Data.Repository
 {
@@ -18,7 +19,10 @@ namespace Agenda_Tup_Back.Data.Repository
         }
         public List<Contact> GetAllContacts(int id)
         {
-            return _context.Contacts.Where(c => c.User.Id == id).ToList();
+            var contacts = _context.Contacts
+                .Where(c => c.User.Id == id)
+                .ToList();
+            return contacts;
         }
 
         public void CreateContacts(ContactForCreation dto, int Id)
@@ -34,6 +38,8 @@ namespace Agenda_Tup_Back.Data.Repository
             contact.Id = id;
             _context.Contacts.Update(contact);
             _context.SaveChanges();
+            //_context.Contacts.Update(_mapper.Map<Contact>(dto));
+            //_context.SaveChanges();
         }
         public void DeleteContacts(int Id)
         {

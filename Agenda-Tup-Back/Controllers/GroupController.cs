@@ -22,7 +22,7 @@ namespace Agenda_Tup_Back.Controllers
         public IActionResult GetAllGroup()
         {
             return Ok(_groupRepository.GetAllGroups());
-            //return Ok(_groupRepository.GetAllGroups());
+
         }
         [HttpGet]
         [Route("{Id}")]
@@ -41,7 +41,7 @@ namespace Agenda_Tup_Back.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateGroup(GroupForCreation dto)
+        public IActionResult CreateGroup(GroupForCreation dto, int id)
         {
             try
             {
@@ -54,6 +54,19 @@ namespace Agenda_Tup_Back.Controllers
             }
             return Created("Created", dto);
         }
-        
+        [HttpPost("AddContacts")]
+        public  IActionResult AddContact(GroupForUpdate dto)
+        {
+            try
+            {
+                _groupRepository.AddContact(dto);
+                return Created("Created", dto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Created("Created", dto);
+        }
     }
 }

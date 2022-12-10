@@ -16,9 +16,10 @@ namespace AgendaTupBack.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    GroupName = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,14 +30,14 @@ namespace AgendaTupBack.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Rol = table.Column<int>(type: "INTEGER", nullable: false),
-                    state = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<int>(type: "int", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,16 +48,16 @@ namespace AgendaTupBack.Migrations
                 name: "Contacts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    CelularNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    TelephoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    Alias = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    state = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CelularNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    state = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,8 +74,8 @@ namespace AgendaTupBack.Migrations
                 name: "ContactGroup",
                 columns: table => new
                 {
-                    ContactsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupsId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ContactsId = table.Column<int>(type: "int", nullable: false),
+                    GroupsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,11 +96,11 @@ namespace AgendaTupBack.Migrations
 
             migrationBuilder.InsertData(
                 table: "Groups",
-                columns: new[] { "Id", "GroupName" },
+                columns: new[] { "Id", "Description", "GroupName" },
                 values: new object[,]
                 {
-                    { 1, "Familia" },
-                    { 2, "Amigos" }
+                    { 1, null, "Familia" },
+                    { 2, "Clases de Matematica a las 17:30hs", "Amigos" }
                 });
 
             migrationBuilder.InsertData(

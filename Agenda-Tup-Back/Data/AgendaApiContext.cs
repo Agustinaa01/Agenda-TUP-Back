@@ -15,6 +15,20 @@ namespace Agenda_Tup_Back.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Estamos sobreescribiendo la clase padre
         {
+            Group Familia = new Group()
+            {
+                Id = 1,
+                GroupName = "Familia",
+                Description = null,
+
+            };
+            Group Amigos = new Group()
+            {
+                Id = 2,
+                GroupName = "Amigos",
+                Description = "Clases de Matematica a las 17:30hs"
+                //ContactId = Juan.Id,
+            };
             User Erica = new User()
             {
                 Id = 1,
@@ -79,18 +93,7 @@ namespace Agenda_Tup_Back.Data
                 Alias = null,
                 UserId = Dana.Id,
             };
-            Group Familia = new Group()
-            {
-                Id = 1,
-                GroupName = "Familia",
-                //ContactId = Juan.Id,
-            };
-            Group Amigos = new Group()
-            {
-                Id = 2,
-                GroupName = "Amigos",
-                //ContactId = Juan.Id,
-            };
+
 
             modelBuilder.Entity<Contact>().HasData(Esmeralda, Daniela, Maria, Juan);
             modelBuilder.Entity<User>().HasData(Dana, Erica);

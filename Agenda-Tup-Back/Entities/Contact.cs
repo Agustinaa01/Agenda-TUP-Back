@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Agenda_Tup_Back.Models.Enum;
 
 namespace Agenda_Tup_Back.Entities
@@ -16,9 +17,12 @@ namespace Agenda_Tup_Back.Entities
         public string? Alias { get; set; }
 
         public string? Email { get; set; }
+        [JsonIgnore]
         public User User { get; set; } //Usuario al que pertenece
         public int UserId { get; set; }
+
         public State state { get; set; } = State.Active;
+        [JsonIgnore]
         public ICollection<Group> Groups { get; set; }
 
     }

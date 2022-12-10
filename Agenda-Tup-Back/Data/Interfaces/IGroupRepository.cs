@@ -9,5 +9,6 @@ namespace Agenda_Tup_Back.Data.Interfaces
         public Group? GetGroupById(int Id);
         //public Group? GetGroupByContact();
         public void CreateGroups(GroupForCreation dto);
+        public void AddContact(GroupForUpdate dto);
     }
 }

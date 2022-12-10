@@ -38,14 +38,25 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-builder.Services.AddDbContext<AgendaApiContext>(dbContextOptions => dbContextOptions.UseSqlite
-(builder.Configuration["ConnectionStrings:AgendaAPIDBConnectionString"]));
+//builder.Services.AddDbContext<AgendaApiContext>(dbContextOptions => dbContextOptions.UseSqlite
+//(builder.Configuration["ConnectionStrings:AgendaAPIDBConnectionString"]));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "AllowOrigin",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+        });
+});
 
-//builder.Services.AddDbContext<AgendaApiContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("AgendaAPIDBConnectionString"));
-//});
+builder.Services.AddDbContext<AgendaApiContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion"));
+});
 
 builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
     .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
