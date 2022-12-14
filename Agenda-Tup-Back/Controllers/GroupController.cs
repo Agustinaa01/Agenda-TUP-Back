@@ -24,6 +24,14 @@ namespace Agenda_Tup_Back.Controllers
             return Ok(_groupRepository.GetAllGroups());
 
         }
+
+        [HttpGet("(groupName)")]
+        public IActionResult GetAllGrouName()
+        {
+            return Ok(_groupRepository.GetAllGroupsNames());
+
+        }
+
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetGroupById(int Id)
@@ -67,6 +75,20 @@ namespace Agenda_Tup_Back.Controllers
                 return BadRequest(ex.Message);
             }
             return Created("Created", dto);
+        }
+        [HttpDelete]
+        [Route("{Id}")]
+        public IActionResult DeleteContactsById(int Id)
+        {
+            try
+            {
+                 _groupRepository.DeleteGroup(Id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

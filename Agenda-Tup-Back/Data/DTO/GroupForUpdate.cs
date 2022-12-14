@@ -4,7 +4,7 @@ namespace Agenda_Tup_Back.Data.DTO
 {
     public class GroupForUpdate
     {
-        public int GroupId { get; set; }   
+        public int GroupId { get; set; }
         public int ContactId { get; set; }
 
         //public int ContactId { get; set; }

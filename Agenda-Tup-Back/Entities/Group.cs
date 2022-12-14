@@ -12,6 +12,7 @@ namespace Agenda_Tup_Back.Entities
         public string GroupName { get; set; }
         public string? Description { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+
     }
 }
 

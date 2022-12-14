@@ -57,9 +57,8 @@ namespace Agenda_Tup_Back.Controllers
         {
             try
             {
-                int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                 int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
                 _contactRepository.UpdateContacts(dto, userId);
-                return Ok(dto);
             }
             catch (Exception ex)
             {

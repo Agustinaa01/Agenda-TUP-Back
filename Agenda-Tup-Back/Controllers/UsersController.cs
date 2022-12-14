@@ -14,11 +14,10 @@ namespace Agenda_Tup_Back.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _automapper;
+
         public UsersController(IUserRepository userRepository) //en el contructor de dicha entre parentesis 
         {
             _userRepository = userRepository;

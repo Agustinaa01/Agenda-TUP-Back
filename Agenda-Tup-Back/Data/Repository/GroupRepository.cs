@@ -24,6 +24,14 @@ namespace Agenda_Tup_Back.Data.Repository
             .ToList();
             return groups;
         }
+        public List<Group> GetAllGroupsNames()
+        {
+            var groups = _context.Groups
+                .Include(b => b.GroupName)
+                .Include(y => y.Id)
+                .ToList();
+            return groups ;
+        }
         public Group? GetGroupById(int Id)
         {
             return _context.Groups.SingleOrDefault(u => u.Id == Id);
@@ -45,6 +53,11 @@ namespace Agenda_Tup_Back.Data.Repository
                 .FirstOrDefault();
             var group = _context.Groups.Find(dto.GroupId);
             contact.Groups.Add(group);
+            _context.SaveChanges();
+        }
+        public void DeleteGroup(int Id)
+        {
+            _context.Groups.Remove(_context.Groups.Single(c => c.Id == Id));
             _context.SaveChanges();
         }
 
