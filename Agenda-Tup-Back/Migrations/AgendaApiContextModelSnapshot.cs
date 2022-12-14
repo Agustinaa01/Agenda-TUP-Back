@@ -2,6 +2,7 @@
 using Agenda_Tup_Back.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -14,39 +15,45 @@ namespace AgendaTupBack.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Agenda_Tup_Back.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Alias")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CelularNumber")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TelephoneNumber")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("state")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -62,6 +69,7 @@ namespace AgendaTupBack.Migrations
                             Email = "Amigo@gmail.com",
                             LastName = "Cruz",
                             Name = "Esmeralda",
+                            TelephoneNumber = "4214587",
                             UserId = 2,
                             state = 0
                         },
@@ -77,7 +85,9 @@ namespace AgendaTupBack.Migrations
                         new
                         {
                             Id = 2,
+                            Alias = "Mary",
                             CelularNumber = "+54341345367",
+                            LastName = "Martinez",
                             Name = "Maria",
                             UserId = 1,
                             state = 0
@@ -85,6 +95,7 @@ namespace AgendaTupBack.Migrations
                         new
                         {
                             Id = 1,
+                            Alias = "Juanito",
                             CelularNumber = "+543436789513",
                             Email = "Hijo@gmail.com",
                             LastName = "Castillo",
@@ -94,29 +105,67 @@ namespace AgendaTupBack.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Agenda_Tup_Back.Entities.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GroupName = "Familia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Clases de Matematica a las 17:30hs",
+                            GroupName = "Amigos"
+                        });
+                });
+
             modelBuilder.Entity("Agenda_Tup_Back.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Rol")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("state")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -129,8 +178,9 @@ namespace AgendaTupBack.Migrations
                             Email = "danaMolina@gmail.com",
                             LastName = "Molina",
                             Password = "456def",
-                            Rol = 0,
-                            UserName = "Dana"
+                            Rol = 1,
+                            UserName = "Dana",
+                            state = 0
                         },
                         new
                         {
@@ -139,8 +189,24 @@ namespace AgendaTupBack.Migrations
                             LastName = "Lechuga",
                             Password = "123abc",
                             Rol = 0,
-                            UserName = "Erica"
+                            UserName = "Erica",
+                            state = 0
                         });
+                });
+
+            modelBuilder.Entity("ContactGroup", b =>
+                {
+                    b.Property<int>("ContactsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactsId", "GroupsId");
+
+                    b.HasIndex("GroupsId");
+
+                    b.ToTable("ContactGroup");
                 });
 
             modelBuilder.Entity("Agenda_Tup_Back.Entities.Contact", b =>
@@ -152,6 +218,21 @@ namespace AgendaTupBack.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ContactGroup", b =>
+                {
+                    b.HasOne("Agenda_Tup_Back.Entities.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agenda_Tup_Back.Entities.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Agenda_Tup_Back.Entities.User", b =>

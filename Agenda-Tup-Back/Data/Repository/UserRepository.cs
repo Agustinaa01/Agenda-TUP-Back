@@ -29,26 +29,34 @@ namespace Agenda_Tup_Back.Data.Repository.Implementations
         }
         public void CreateUsers(UserForCreation dto)
         {
-            _context.Users.Add(_mapper.Map<User>(dto)); //mapear de dto a mascota
+            _context.Users.Add(_mapper.Map<User>(dto));
             _context.SaveChanges();
         }
+
         //public void UpdateUsers(UserForCreation dto)
         //{
         //    _context.Users.Update(_mapper.Map<User>(dto));
         //}
         //public void DeleteUsers(string id)
-        //{
+        //{ 
         //    _context.Users.Remove(_context.Users.Single(c => c.Id == id));
         //}
-    
-        //public void ArchiveUsers(string Id)
-        //{
-        //    User user = _context.Users.FirstOrDefault(u => u.Id == Id);
-        //    if (user != null)
-        //    {
-        //        user.state = State.Archived;
-        //        _context.Update(user);
-        //    }
-        //}
+        public void DeleteUsers(int id)
+        {
+            _context.Users.Remove(_context.Users.Single(u => u.Id == id));
+            _context.SaveChanges();
+        }
+
+        public void ArchiveUsers(int Id)
+        {
+            User user = _context.Users.FirstOrDefault(u => u.Id == Id);
+            if (user != null)
+            {
+                user.state = State.Archived;
+                _context.Update(user);
+            }
+            _context.SaveChanges();
+        }
+
     }   
 }

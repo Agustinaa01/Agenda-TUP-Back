@@ -1,8 +1,10 @@
-﻿using Agenda_Tup_Back.Data.Interfaces;
+﻿using Agenda_Tup_Back.Data.DTO;
+using Agenda_Tup_Back.Data.Interfaces;
 using Agenda_Tup_Back.DTO;
 using Agenda_Tup_Back.Entities;
 using Agenda_Tup_Back.Models.Enum;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agenda_Tup_Back.Data.Repository
 {
@@ -15,19 +17,25 @@ namespace Agenda_Tup_Back.Data.Repository
             _context = context;
             _mapper = autoMapper;
         }
-        public List<Contact> GetAllContacts()
+        public List<Contact> GetAllContacts(int id)
         {
-            return _context.Contacts.ToList();
+            var contacts = _context.Contacts
+                .Where(c => c.User.Id == id)
+                .ToList();
+            return contacts;
         }
-        public void CreateContacts(ContactForCreation dto)
-        {
-            _context.Contacts.Add(_mapper.Map<Contact>(dto));
-            _context.SaveChanges();
-        }
-        public void UpdateContacts(ContactForCreation dto, int Id)
+
+        public void CreateContacts(ContactForCreation dto, int Id)
         {
             Contact contact = _mapper.Map<Contact>(dto);
-            contact.Id = Id;
+            contact.UserId = Id;
+            _context.Contacts.Add(contact);
+            _context.SaveChanges();
+        }
+        public void UpdateContacts(ContactForCreation dto, int id)
+        {
+            Contact contact = _mapper.Map<Contact>(dto);
+            contact.UserId = id;
             _context.Contacts.Update(contact);
             _context.SaveChanges();
         }
@@ -46,11 +54,6 @@ namespace Agenda_Tup_Back.Data.Repository
             }
             _context.SaveChanges();
         }
-        //public void CreateGroup(AddToGroupForcreation dto)
-        //{
-        //    _context.Contacts.Add(_mapper.Map<Contact>(dto));
-        //    _context.SaveChanges();
-        //}
 
     }
 

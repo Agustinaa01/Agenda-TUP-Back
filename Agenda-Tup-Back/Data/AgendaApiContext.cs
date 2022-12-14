@@ -8,13 +8,27 @@ namespace Agenda_Tup_Back.Data
     {
         public DbSet <User> Users { get; set; }
         public DbSet <Contact> Contacts { get; set; }
-
+        public DbSet<Group> Groups { get; set; }
         public AgendaApiContext(DbContextOptions<AgendaApiContext> options): base(options)
         {
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Estamos sobreescribiendo la clase padre
         {
+            Group Familia = new Group()
+            {
+                Id = 1,
+                GroupName = "Familia",
+                Description = null,
+
+            };
+            Group Amigos = new Group()
+            {
+                Id = 2,
+                GroupName = "Amigos",
+                Description = "Clases de Matematica a las 17:30hs"
+                //ContactId = Juan.Id,
+            };
             User Erica = new User()
             {
                 Id = 1,
@@ -32,7 +46,6 @@ namespace Agenda_Tup_Back.Data
                 LastName = "Molina",
                 Password = "456def",
                 Email = "danaMolina@gmail.com",
-                Rol = Rol.Admin,
     
             };
             Contact Juan = new Contact()
@@ -41,17 +54,21 @@ namespace Agenda_Tup_Back.Data
                 Name = "Juan",
                 LastName = "Castillo",
                 CelularNumber = "+543436789513",
+                TelephoneNumber= null,
+                Alias = "Juanito",
                 Email = "Hijo@gmail.com",
                 UserId = Dana.Id,
-                state = State.Active
             };
             Contact Maria = new Contact()
             {
                 Id = 2,
                 Name = "Maria",
+                LastName = "Martinez",
                 CelularNumber = "+54341345367",
+                TelephoneNumber = null,
+                Alias = "Mary",
+                Email = null,
                 UserId = Erica.Id,
-                state = State.Active
             };
             Contact Daniela = new Contact()
             {
@@ -59,8 +76,11 @@ namespace Agenda_Tup_Back.Data
                 Name = "Daniela",
                 LastName = "Romero",
                 CelularNumber = "+54114567789",
+                TelephoneNumber = null,
+                Alias = null,
+                Email = null,
                 UserId = Erica.Id,
-                state = State.Active
+
             };
             Contact Esmeralda = new Contact()
             {
@@ -68,14 +88,18 @@ namespace Agenda_Tup_Back.Data
                 Name = "Esmeralda",
                 LastName = "Cruz",
                 CelularNumber = "+54341234975",
+                TelephoneNumber = "4214587",
                 Email = "Amigo@gmail.com",
+                Alias = null,
                 UserId = Dana.Id,
-                state = State.Active
-
             };
+
+
             modelBuilder.Entity<Contact>().HasData(Esmeralda, Daniela, Maria, Juan);
             modelBuilder.Entity<User>().HasData(Dana, Erica);
-            modelBuilder.Entity<User>().HasMany(u => u.Contact).WithOne(c => c.User); //Tabla de 1-N        
+            modelBuilder.Entity<Group>().HasData(Familia, Amigos);
+            modelBuilder.Entity<User>().HasMany(u => u.Contact).WithOne(c => c.User);
+            modelBuilder.Entity<Contact>().HasMany(u => u.Groups).WithMany(c => c.Contacts); //Tabla de 1-N        
             base.OnModelCreating(modelBuilder);
         }
     }

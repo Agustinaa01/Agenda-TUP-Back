@@ -12,17 +12,6 @@ using Agenda_Tup_Back.Profiles;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        name: "AllowOrigin",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-        });
-});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -49,13 +38,25 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-builder.Services.AddDbContext<AgendaApiContext>(dbContextOptions => dbContextOptions.UseSqlite
-(builder.Configuration["ConnectionStrings:AgendaAPIDBConnectionString"]));
+//builder.Services.AddDbContext<AgendaApiContext>(dbContextOptions => dbContextOptions.UseSqlite
+//(builder.Configuration["ConnectionStrings:AgendaAPIDBConnectionString"]));
 
-//builder.Services.AddDbContext<AgendaApiContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("AgendaAPIDBConnectionString"));
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "AllowOrigin",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+        });
+});
+
+builder.Services.AddDbContext<AgendaApiContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion"));
+});
 
 builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
     .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
@@ -77,6 +78,7 @@ var config = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new ContactProfile());
     cfg.AddProfile(new UserProfile());
+    cfg.AddProfile(new GroupProfile());
 });
 var mapper = config.CreateMapper();
 
@@ -84,7 +86,9 @@ var mapper = config.CreateMapper();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 #endregion
+
 
 var app = builder.Build();
 
