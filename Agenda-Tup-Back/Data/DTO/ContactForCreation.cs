@@ -5,6 +5,7 @@ namespace Agenda_Tup_Back.DTO
 {
     public class ContactForCreation
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string LastName { get; set; }

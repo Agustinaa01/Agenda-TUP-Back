@@ -7,8 +7,9 @@ namespace Agenda_Tup_Back.Data.Interfaces
     public interface IContactRepository
     {
         public List<Contact> GetAllContacts(int id);
+        public Contact GetContactById(int Id);
         public void CreateContacts(ContactForCreation dto, int Id);
-        public void UpdateContacts(ContactForCreation dto, int id);
+        public void UpdateContacts(Contact contacto);
         public void DeleteContacts(int Id);
         public void ArchiveContacts(int Id);
         //public void CreateGroup(AddToGroupForcreation dto);
