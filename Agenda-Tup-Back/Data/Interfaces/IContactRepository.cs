@@ -12,8 +12,7 @@ namespace Agenda_Tup_Back.Data.Interfaces
         public void UpdateContacts(Contact contacto);
         public void DeleteContacts(int Id);
         public void ArchiveContacts(int Id);
-        //public void CreateGroup(AddToGroupForcreation dto);
-        //public void AddToGroup(string Id, string groupName);
+
     }
 }
 

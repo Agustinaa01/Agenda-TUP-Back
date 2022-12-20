@@ -7,7 +7,5 @@ namespace Agenda_Tup_Back.Data.DTO
         public int GroupId { get; set; }
         public int ContactId { get; set; }
 
-        //public int ContactId { get; set; }
-        //public Contact? Contact { get; set; }
     }
 }

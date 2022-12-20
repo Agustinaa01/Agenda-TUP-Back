@@ -31,14 +31,7 @@ namespace Agenda_Tup_Back.Controllers
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
             return Ok(_contactRepository.GetAllContacts(userId));
         }
-
-        //[HttpGet]
-        //[Route("{Id}")]
-        //public IActionResult GetOneById(int Id)
-        //{
-        //    int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-        //    return Ok(_contactRepository.GetContactsById(userId));
-        //}
+ 
         [HttpGet("{id}")]
         public IActionResult GetContactById(int id)
         {

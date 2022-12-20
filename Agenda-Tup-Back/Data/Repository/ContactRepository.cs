@@ -29,7 +29,7 @@ namespace Agenda_Tup_Back.Data.Repository
             return _context.Contacts.Find(id);
 
         }
-
+        
         public void CreateContacts(ContactForCreation dto, int Id)
         {
             Contact contact = _mapper.Map<Contact>(dto);
@@ -53,10 +53,6 @@ namespace Agenda_Tup_Back.Data.Repository
 
                 _context.SaveChanges();
             }
-            //Contact contact = _mapper.Map<Contact>(dto);
-            //contact.UserId = id;
-            //_context.Contacts.Update(contact);
-            //_context.SaveChanges();
         }
         public void DeleteContacts(int Id)
         {

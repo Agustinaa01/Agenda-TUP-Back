@@ -120,6 +120,9 @@ namespace AgendaTupBack.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
@@ -128,13 +131,15 @@ namespace AgendaTupBack.Migrations
                         new
                         {
                             Id = 1,
-                            GroupName = "Familia"
+                            GroupName = "Familia",
+                            UserId = 0
                         },
                         new
                         {
                             Id = 2,
                             Description = "Clases de Matematica a las 17:30hs",
-                            GroupName = "Amigos"
+                            GroupName = "Amigos",
+                            UserId = 0
                         });
                 });
 
