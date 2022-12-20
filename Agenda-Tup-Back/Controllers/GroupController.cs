@@ -1,6 +1,7 @@
 ﻿
 using Agenda_Tup_Back.Data.DTO;
 using Agenda_Tup_Back.Data.Interfaces;
+using Agenda_Tup_Back.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,31 +14,41 @@ namespace Agenda_Tup_Back.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IMapper _mapper;
 
-        public GroupController(IGroupRepository groupRepository)
+        public GroupController(IGroupRepository groupRepository, IMapper mapper)
         {
             _groupRepository = groupRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult GetAllGroup()
         {
-            return Ok(_groupRepository.GetAllGroups());
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_groupRepository.GetAllGroups(userId));
 
         }
 
-        [HttpGet("(groupName)")]
-        public IActionResult GetAllGrouName()
+        [HttpGet("groupName")]
+        public IActionResult GetAllGroupName()
         {
-            return Ok(_groupRepository.GetAllGroupsNames());
+            try
+            {
+                int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                return Ok(_groupRepository.GetAllGroupsNames(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
+
 
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetGroupById(int Id)
         {
-            //User user = _userRepository.GetUserById(Id);
-            //var dto = _automapper.Map<GetUserByIdResponse>(user);
             try
             {
                 return Ok(_groupRepository.GetGroupById(Id));
@@ -62,6 +73,7 @@ namespace Agenda_Tup_Back.Controllers
             }
             return Created("Created", dto);
         }
+
         [HttpPost("AddContacts")]
         public  IActionResult AddContact(GroupForUpdate dto)
         {
@@ -76,6 +88,7 @@ namespace Agenda_Tup_Back.Controllers
             }
             return Created("Created", dto);
         }
+
         [HttpDelete]
         [Route("{Id}")]
         public IActionResult DeleteContactsById(int Id)

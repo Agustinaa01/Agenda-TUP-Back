@@ -33,14 +33,6 @@ namespace Agenda_Tup_Back.Data.Repository.Implementations
             _context.SaveChanges();
         }
 
-        //public void UpdateUsers(UserForCreation dto)
-        //{
-        //    _context.Users.Update(_mapper.Map<User>(dto));
-        //}
-        //public void DeleteUsers(string id)
-        //{ 
-        //    _context.Users.Remove(_context.Users.Single(c => c.Id == id));
-        //}
         public void DeleteUsers(int id)
         {
             _context.Users.Remove(_context.Users.Single(u => u.Id == id));

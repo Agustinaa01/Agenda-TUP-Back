@@ -24,7 +24,12 @@ namespace Agenda_Tup_Back.Data.Repository
                 .ToList();
             return contacts;
         }
+        public Contact GetContactById(int id)
+        {
+            return _context.Contacts.Find(id);
 
+        }
+        
         public void CreateContacts(ContactForCreation dto, int Id)
         {
             Contact contact = _mapper.Map<Contact>(dto);
@@ -32,12 +37,22 @@ namespace Agenda_Tup_Back.Data.Repository
             _context.Contacts.Add(contact);
             _context.SaveChanges();
         }
-        public void UpdateContacts(ContactForCreation dto, int id)
+
+        public void UpdateContacts(Contact contacto)
         {
-            Contact contact = _mapper.Map<Contact>(dto);
-            contact.UserId = id;
-            _context.Contacts.Update(contact);
-            _context.SaveChanges();
+            var contactoItem = _context.Contacts.FirstOrDefault(x => x.Id == contacto.Id);
+
+            if (contactoItem != null)
+            {
+                contactoItem.Name = contacto.Name;
+                contactoItem.LastName = contacto.LastName;
+                contactoItem.Alias = contacto.Alias;
+                contactoItem.CelularNumber = contacto.CelularNumber;
+                contactoItem.TelephoneNumber = contacto.TelephoneNumber;
+                contactoItem.Email = contacto.Email;
+
+                _context.SaveChanges();
+            }
         }
         public void DeleteContacts(int Id)
         {

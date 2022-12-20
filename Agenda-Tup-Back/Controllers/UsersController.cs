@@ -32,8 +32,7 @@ namespace Agenda_Tup_Back.Controllers
         [Route("{Id}")]
         public IActionResult GetUserById(int Id)
         {
-            //User user = _userRepository.GetUserById(Id);
-            //var dto = _automapper.Map<GetUserByIdResponse>(user);
+
             try
             {
                 return Ok(_userRepository.GetUserById(Id));
@@ -57,19 +56,6 @@ namespace Agenda_Tup_Back.Controllers
             }
             return Created("Created", dto);
         }
-        //[HttpPut]
-        //public IActionResult UpdateUser(UserForCreation userCreationDTO)
-        //{
-        //    try
-        //    {
-        //        _userRepository.UpdateUsers(userCreationDTO);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex);
-        //    }
-        //    return NoContent();
-        //}
 
 
         [HttpDelete]

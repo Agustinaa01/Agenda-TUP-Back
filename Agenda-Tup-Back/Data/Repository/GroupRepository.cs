@@ -17,31 +17,27 @@ namespace Agenda_Tup_Back.Data.Repository
             _mapper = autoMapper;
         }
 
-        public List<Group> GetAllGroups()
+        public List<Group> GetAllGroups(int id)
         {
             var groups = _context.Groups
             .Include(c=> c.Contacts)
             .ToList();
             return groups;
         }
-        public List<Group> GetAllGroupsNames()
+        public List<Group> GetAllGroupsNames(int id)
         {
-            var groups = _context.Groups
-                .Include(b => b.GroupName)
-                .Include(y => y.Id)
-                .ToList();
-            return groups ;
+            return _context.Groups.ToList();
         }
+
         public Group? GetGroupById(int Id)
         {
-            return _context.Groups.SingleOrDefault(u => u.Id == Id);
+            var grupos = _context.Groups
+                .Include(c => c.Contacts)
+                .SingleOrDefault(u => u.Id == Id);
+            return grupos;
         }
         public void CreateGroups(GroupForCreation dto)
         {
-            //Group group = _mapper.Map<Group>(dto);
-            //group.ContactId = Id;
-            //_context.Groups.Add(group);
-            //_context.SaveChanges();
             _context.Groups.Add(_mapper.Map<Group>(dto));
             _context.SaveChanges();
         }

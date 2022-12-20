@@ -38,8 +38,6 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-//builder.Services.AddDbContext<AgendaApiContext>(dbContextOptions => dbContextOptions.UseSqlite
-//(builder.Configuration["ConnectionStrings:AgendaAPIDBConnectionString"]));
 
 builder.Services.AddCors(options =>
 {
